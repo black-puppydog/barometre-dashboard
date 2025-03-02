@@ -2,6 +2,8 @@ use dioxus::prelude::*;
 
 const HEADER_SVG: Asset = asset!("/assets/header.svg");
 
+const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress.geojson";
+
 #[component]
 pub fn Hero() -> Element {
     rsx! {
