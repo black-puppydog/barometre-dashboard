@@ -1,10 +1,10 @@
-use crate::components::Hero;
+use crate::components::Dashboard;
 use dioxus::prelude::*;
 
 #[component]
 pub fn Home() -> Element {
     rsx! {
-        Hero {}
+        "The home. Go elsewhere!"
 
     }
 }

@@ -1,5 +1,5 @@
 mod hero;
-pub use hero::Hero;
+pub use hero::Dashboard;
 
 mod navbar;
 pub use navbar::Navbar;

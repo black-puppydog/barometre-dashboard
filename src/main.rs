@@ -4,6 +4,7 @@ use components::Navbar;
 use views::{Blog, Home};
 
 mod components;
+mod types;
 mod views;
 
 #[derive(Debug, Clone, Routable, PartialEq)]
@@ -12,7 +13,7 @@ enum Route {
     #[layout(Navbar)]
     #[route("/")]
     Home {},
-    #[route("/blog/:id")]
+    #[route("/département/:id")]
     Blog { id: i32 },
 }
 
