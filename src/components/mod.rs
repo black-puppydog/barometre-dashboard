@@ -1,2 +1,2 @@
-mod hero;
-pub use hero::Dashboard;
+mod dashboard;
+pub use dashboard::Dashboard;
