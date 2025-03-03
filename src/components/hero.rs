@@ -32,13 +32,11 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
                 "{progress}% ({data.contributions} / {max})"
             }
         }
-        div {
+        progress {
             class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
-            div {
-                class: "h-6 bg-blue-600 rounded-full dark:bg-blue-500",
-                style: "width: {progress}%; border: 1px black"
-            }
-            "meh"
+            max: 100,
+            value: progress,
+            "{progress}%"
         }
     })
 }
@@ -65,7 +63,10 @@ pub fn Dashboard(prefix: String) -> Element {
     let have_response = communes_data.is_some();
     let mut progresses = vec![];
     if let Some(communes_data) = communes_data {
-        for pair in insee_codes.iter().filter(|pair| pair.0.starts_with("83")) {
+        for pair in insee_codes
+            .iter()
+            .filter(|pair| pair.0.starts_with(&prefix))
+        {
             let code = pair.0.clone();
             let data = if let Some(data) = communes_data.get(&code) {
                 data.clone()
