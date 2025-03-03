@@ -3,7 +3,7 @@
 [web.app]
 
 # HTML title tag content
-title = "my-barometre-dashboard"
+title = "Baromètre: mon département"
 
 # include `assets` in web platform
 [web.resource]
