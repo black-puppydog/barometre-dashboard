@@ -1,6 +1,53 @@
 use dioxus::prelude::*;
 
 use crate::types::{CommuneData, CommuneProperties};
+use std::collections::HashSet;
+use std::sync::LazyLock;
+use std::sync::Mutex;
+static INSEE_CODES: LazyLock<Mutex<HashSet<&str>>> = LazyLock::new(|| {
+    let result = [
+        "83001", "83002", "83003", "83004", "83005", "83006", "83007", "83008", "83009", "83010",
+        "83011", "83012", "83013", "83014", "83015", "83016", "83017", "83018", "83019", "83020",
+        "83021", "83022", "83023", "83025", "83026", "83027", "83028", "83029", "83030", "83031",
+        "83032", "83033", "83034", "83035", "83036", "83037", "83038", "83039", "83040", "83041",
+        "83042", "83043", "83044", "83045", "83046", "83047", "83048", "83049", "83050", "83051",
+        "83052", "83053", "83054", "83055", "83056", "83057", "83058", "83059", "83060", "83061",
+        "83062", "83063", "83064", "83065", "83066", "83067", "83068", "83069", "83070", "83071",
+        "83072", "83073", "83074", "83075", "83076", "83077", "83078", "83079", "83080", "83081",
+        "83082", "83083", "83084", "83085", "83086", "83087", "83088", "83089", "83090", "83091",
+        "83092", "83093", "83094", "83095", "83096", "83097", "83098", "83099", "83100", "83101",
+        "83102", "83103", "83104", "83105", "83106", "83107", "83108", "83109", "83110", "83111",
+        "83112", "83113", "83114", "83115", "83116", "83117", "83118", "83119", "83120", "83121",
+        "83122", "83123", "83124", "83125", "83126", "83127", "83128", "83129", "83130", "83131",
+        "83132", "83133", "83134", "83135", "83136", "83137", "83138", "83139", "83140", "83141",
+        "83142", "83143", "83144", "83145", "83146", "83147", "83148", "83149", "83150", "83151",
+        "83152", "83153", "83154",
+    ]
+    // let result = [
+    //     "6029", "83050", "83050", "83050", "83050", "13001", "83050", "83061", "83137", "83050",
+    //     "83050", "83023", "83050", "83050", "83050", "83137", "83137", "83023", "83137", "83050",
+    //     "83023", "4070", "83023", "83023", "83023", "83137", "83050", "6029", "83023", "83023",
+    //     "83023", "83137", "83137", "83137", "83115", "83023", "83050", "83023", "83050", "83050",
+    //     "83115", "83137", "83050", "83023", "83023", "83137", "83115", "83137", "83050", "83050",
+    //     "83023", "83137", "83137", "6029", "83050", "83023", "83050", "83023", "83050", "83061",
+    //     "83137", "83115", "83023", "83115", "4112", "83023", "83115", "83137", "83137", "83137",
+    //     "83050", "83023", "83050", "83023", "83023", "83137", "83050", "83115", "6029", "6029",
+    //     "83050", "83023", "83023", "83050", "83050", "83023", "83023", "83023", "83137", "83137",
+    //     "83023", "13055", "83115", "83023", "13001", "13001", "83137", "83061", "83137", "83115",
+    //     "83050", "83137", "13001", "13055", "83023", "83061", "83023", "83050", "83023", "83023",
+    //     "13055", "4112", "83023", "83115", "83023", "6029", "83061", "83115", "13055", "83050",
+    //     "83050", "83137", "6029", "83023", "83137", "83137", "83050", "83137", "83137", "83137",
+    //     "83137", "6029", "83050", "83023", "83023", "83137", "6029", "83050", "83023", "83050",
+    //     "4070", "83023", "83137", "83023", "4112", "83050", "83050", "83050", "4112", "83023",
+    //     "83115", "83137", "83050",
+    // ]
+    .into_iter()
+    .collect::<HashSet<&str>>();
+    // {
+    //     result.insert(s);
+    // }
+    Mutex::new(result)
+});
 
 const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress.geojson";
 
@@ -8,17 +55,29 @@ const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress
 pub fn Commune(data: CommuneProperties) -> Element {
     let name = data.name;
     let population = data.population;
+    let max: f32 = if population < 5000 { 30.0 } else { 50.0 };
+    let progress = (100.0 * (data.contributions as f32 / max)).round() as usize;
     let insee = data.insee;
     rsx!(div {
-                div{"{name}    {insee}"}
+        div{
+            class:"flex justify-between mb-1",
+            span {
+                class:"text-base font-medium text-blue-700 dark:text-white",
+                "{name} ({insee})"
+            }
+            span {
+                class:"text-sm font-medium text-blue-700 dark:text-white",
+                "{progress}% ({data.contributions} / {max})"
+            }
+        }
+        div {
+            class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
             div {
-    class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
-                progress {
-                    max: 50,
-                    value: data.contributions,
-                    class: "h-6 bg-blue-600 rounded-full dark:bg-blue-500",
-                    style:"width: 45%"}
-            }})
+                class: "h-6 bg-blue-600 rounded-full dark:bg-blue-500",
+                style: "width: {progress}%"
+            }
+        }
+    })
 }
 
 #[component]
@@ -32,14 +91,18 @@ pub fn Dashboard(prefix: String) -> Element {
             .unwrap()
             .features
     });
+    let codes = INSEE_CODES.lock().unwrap();
     rsx! {
         div {
             id: "hero",
             if let Some(response) = &*communes.read() {
-                div { id: "links",
-                    for commune in response.iter().filter(|commune|
-                        commune.properties.insee.starts_with(&prefix)) {
+                div {
+                    id: "links",
+                    class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
+                    for commune in response.iter().filter(|commune| {println!("{}", &*commune.properties.insee); codes.contains(&*commune.properties.insee)}) {
+                        div {
                             Commune{ data: commune.properties.clone()
+                            }
                         }
                     }
                 }

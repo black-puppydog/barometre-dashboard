@@ -1,6 +1,5 @@
 use dioxus::prelude::*;
 
-use components::Navbar;
 use views::{Blog, Home};
 
 mod components;
@@ -10,7 +9,6 @@ mod views;
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
 enum Route {
-    #[layout(Navbar)]
     #[route("/")]
     Home {},
     #[route("/département/:id")]

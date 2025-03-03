@@ -8,8 +8,14 @@
 .fixed {
   position: fixed;
 }
+.relative {
+  position: relative;
+}
 .static {
   position: static;
+}
+.contents {
+  display: contents;
 }
 .flex {
   display: flex;
@@ -38,8 +44,28 @@
 .resize {
   resize: both;
 }
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.justify-between {
+  justify-content: space-between;
+}
 .rounded-full {
   border-radius: calc(infinity * 1px);
+}
+.border {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+}
+.text-center {
+  text-align: center;
+}
+.leading-none {
+  --tw-leading: 1;
+  line-height: 1;
 }
 .filter {
   filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -77,6 +103,15 @@
   syntax: "*";
   inherits: false;
   initial-value: skewY(0);
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
 }
 @property --tw-blur {
   syntax: "*";
