@@ -31,3 +31,21 @@ pub struct CommuneProperties {
     pub(crate) per_cent: f64,
     pub(crate) insee: String,
 }
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+pub struct CommunePropertiesSlim {
+    pub(crate) name: String,
+    pub(crate) population: i64,
+    pub(crate) contributions: i64,
+    pub(crate) insee: String,
+}
+
+impl Into<CommunePropertiesSlim> for CommuneProperties {
+    fn into(self) -> CommunePropertiesSlim {
+        CommunePropertiesSlim {
+            name: self.name,
+            population: self.population,
+            contributions: self.contributions,
+            insee: self.insee,
+        }
+    }
+}

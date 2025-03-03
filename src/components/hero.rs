@@ -1,58 +1,19 @@
 use dioxus::prelude::*;
 
-use crate::types::{CommuneData, CommuneProperties};
-use std::collections::HashSet;
+use crate::types::{CommuneData, CommuneProperties, CommunePropertiesSlim};
+use std::collections::HashMap;
 use std::sync::LazyLock;
 use std::sync::Mutex;
-static INSEE_CODES: LazyLock<Mutex<HashSet<&str>>> = LazyLock::new(|| {
-    let result = [
-        "83001", "83002", "83003", "83004", "83005", "83006", "83007", "83008", "83009", "83010",
-        "83011", "83012", "83013", "83014", "83015", "83016", "83017", "83018", "83019", "83020",
-        "83021", "83022", "83023", "83025", "83026", "83027", "83028", "83029", "83030", "83031",
-        "83032", "83033", "83034", "83035", "83036", "83037", "83038", "83039", "83040", "83041",
-        "83042", "83043", "83044", "83045", "83046", "83047", "83048", "83049", "83050", "83051",
-        "83052", "83053", "83054", "83055", "83056", "83057", "83058", "83059", "83060", "83061",
-        "83062", "83063", "83064", "83065", "83066", "83067", "83068", "83069", "83070", "83071",
-        "83072", "83073", "83074", "83075", "83076", "83077", "83078", "83079", "83080", "83081",
-        "83082", "83083", "83084", "83085", "83086", "83087", "83088", "83089", "83090", "83091",
-        "83092", "83093", "83094", "83095", "83096", "83097", "83098", "83099", "83100", "83101",
-        "83102", "83103", "83104", "83105", "83106", "83107", "83108", "83109", "83110", "83111",
-        "83112", "83113", "83114", "83115", "83116", "83117", "83118", "83119", "83120", "83121",
-        "83122", "83123", "83124", "83125", "83126", "83127", "83128", "83129", "83130", "83131",
-        "83132", "83133", "83134", "83135", "83136", "83137", "83138", "83139", "83140", "83141",
-        "83142", "83143", "83144", "83145", "83146", "83147", "83148", "83149", "83150", "83151",
-        "83152", "83153", "83154",
-    ]
-    // let result = [
-    //     "6029", "83050", "83050", "83050", "83050", "13001", "83050", "83061", "83137", "83050",
-    //     "83050", "83023", "83050", "83050", "83050", "83137", "83137", "83023", "83137", "83050",
-    //     "83023", "4070", "83023", "83023", "83023", "83137", "83050", "6029", "83023", "83023",
-    //     "83023", "83137", "83137", "83137", "83115", "83023", "83050", "83023", "83050", "83050",
-    //     "83115", "83137", "83050", "83023", "83023", "83137", "83115", "83137", "83050", "83050",
-    //     "83023", "83137", "83137", "6029", "83050", "83023", "83050", "83023", "83050", "83061",
-    //     "83137", "83115", "83023", "83115", "4112", "83023", "83115", "83137", "83137", "83137",
-    //     "83050", "83023", "83050", "83023", "83023", "83137", "83050", "83115", "6029", "6029",
-    //     "83050", "83023", "83023", "83050", "83050", "83023", "83023", "83023", "83137", "83137",
-    //     "83023", "13055", "83115", "83023", "13001", "13001", "83137", "83061", "83137", "83115",
-    //     "83050", "83137", "13001", "13055", "83023", "83061", "83023", "83050", "83023", "83023",
-    //     "13055", "4112", "83023", "83115", "83023", "6029", "83061", "83115", "13055", "83050",
-    //     "83050", "83137", "6029", "83023", "83137", "83137", "83050", "83137", "83137", "83137",
-    //     "83137", "6029", "83050", "83023", "83023", "83137", "6029", "83050", "83023", "83050",
-    //     "4070", "83023", "83137", "83023", "4112", "83050", "83050", "83050", "4112", "83023",
-    //     "83115", "83137", "83050",
-    // ]
-    .into_iter()
-    .collect::<HashSet<&str>>();
-    // {
-    //     result.insert(s);
-    // }
-    Mutex::new(result)
-});
 
 const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress.geojson";
 
+fn read_insee_codes() -> serde_json::Result<HashMap<String, String>> {
+    let insee_codes = include_str!("../../assets/codes_insee_simple.json");
+    serde_json::from_str::<HashMap<String, String>>(insee_codes)
+}
+
 #[component]
-pub fn Commune(data: CommuneProperties) -> Element {
+pub fn Commune(data: CommunePropertiesSlim) -> Element {
     let name = data.name;
     let population = data.population;
     let max: f32 = if population < 5000 { 30.0 } else { 50.0 };
@@ -83,28 +44,64 @@ pub fn Commune(data: CommuneProperties) -> Element {
 #[component]
 pub fn Dashboard(prefix: String) -> Element {
     let communes = use_resource(move || async move {
-        reqwest::get(PROGRESS_URL)
+        let raw_data = reqwest::get(PROGRESS_URL)
             .await
             .unwrap()
             .json::<crate::types::Progress>()
             .await
             .unwrap()
-            .features
+            .features;
+
+        let mut contribution_stats: HashMap<String, CommunePropertiesSlim> = HashMap::new();
+        for commune in raw_data {
+            contribution_stats.insert(commune.properties.insee.clone(), commune.properties.into());
+        }
+        contribution_stats
     });
-    let codes = INSEE_CODES.lock().unwrap();
+    let insee_codes = read_insee_codes()?;
+    let communes_data = &*communes.read();
+    let have_response = communes_data.is_some();
+    let mut progresses = vec![];
+    if let Some(communes_data) = communes_data {
+        for pair in insee_codes.iter().filter(|pair| pair.0.starts_with("83")) {
+            let code = pair.0.clone();
+            let data = if let Some(data) = communes_data.get(&code) {
+                data.clone()
+            } else {
+                CommunePropertiesSlim {
+                    name: pair.1.clone(),
+                    insee: code.clone(),
+                    // TODO: we should be able to find this from the insee data to populate correctly
+                    population: 5000,
+                    contributions: 0,
+                }
+            };
+            progresses.push(data);
+        }
+    }
     rsx! {
         div {
             id: "hero",
-            if let Some(response) = &*communes.read() {
+            if have_response {
                 div {
                     id: "links",
                     class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
-                    for commune in response.iter().filter(|commune| {println!("{}", &*commune.properties.insee); codes.contains(&*commune.properties.insee)}) {
-                        div {
-                            Commune{ data: commune.properties.clone()
-                            }
-                        }
+                    for prog in progresses {
+                        Commune{data: prog}
                     }
+                    // for commune in response.iter().filter(|commune| commune.0.starts_with("83")) {
+                    // for (&code, &name) in {
+                    //     div {
+                    //         Commune{ data: response.get(code).or(Some(CommunePropertiesSlim{
+                    //             name,
+                    //             insee: code,
+                    //             // TODO: we should be able to find this from the insee data to populate correctly
+                    //             population: 5000,
+                    //             contributions: 0,
+                    //         })).unwrap().clone()
+                    //         }
+                    //     }
+                    // }
                 }
             } else {
                 div { h2{"Loading..." }}
