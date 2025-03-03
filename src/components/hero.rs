@@ -18,7 +18,9 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
     let name = data.name;
     let progress = (100.0 * (data.contributions as f32 / max as f32)).round() as usize;
     let insee = data.insee;
-    rsx!(div {
+    rsx!(
+    div {
+        class: "rounded-md",
         div{
             class:"flex justify-between mb-1",
             span {
@@ -34,8 +36,9 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
             class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
             div {
                 class: "h-6 bg-blue-600 rounded-full dark:bg-blue-500",
-                style: "width: {progress}%"
+                style: "width: {progress}%; border: 1px black"
             }
+            "meh"
         }
     })
 }
@@ -89,23 +92,10 @@ pub fn Dashboard(prefix: String) -> Element {
                     for prog in progresses {
                         Commune{data: prog}
                     }
-                    // for commune in response.iter().filter(|commune| commune.0.starts_with("83")) {
-                    // for (&code, &name) in {
-                    //     div {
-                    //         Commune{ data: response.get(code).or(Some(CommunePropertiesSlim{
-                    //             name,
-                    //             insee: code,
-                    //             // TODO: we should be able to find this from the insee data to populate correctly
-                    //             population: 5000,
-                    //             contributions: 0,
-                    //         })).unwrap().clone()
-                    //         }
-                    //     }
-                    // }
                 }
             } else {
                 div { h2{"Loading..." }}
-            }
+                }
         }
     }
 }
