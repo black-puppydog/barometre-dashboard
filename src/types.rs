@@ -49,3 +49,17 @@ impl Into<CommunePropertiesSlim> for CommuneProperties {
         }
     }
 }
+
+impl CommunePropertiesSlim {
+    pub fn progress(&self) -> f32 {
+        (100.0 * self.contributions as f32 / self.target_contributions() as f32).min(100.0)
+    }
+
+    pub fn target_contributions(&self) -> usize {
+        if self.population < 5000 {
+            30
+        } else {
+            50
+        }
+    }
+}

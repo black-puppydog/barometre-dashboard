@@ -14,10 +14,9 @@ fn read_insee_codes() -> serde_json::Result<HashMap<String, String>> {
 
 #[component]
 pub fn Commune(data: CommunePropertiesSlim) -> Element {
+    let max = data.target_contributions();
     let name = data.name;
-    let population = data.population;
-    let max: f32 = if population < 5000 { 30.0 } else { 50.0 };
-    let progress = (100.0 * (data.contributions as f32 / max)).round() as usize;
+    let progress = (100.0 * (data.contributions as f32 / max as f32)).round() as usize;
     let insee = data.insee;
     rsx!(div {
         div{
@@ -79,6 +78,7 @@ pub fn Dashboard(prefix: String) -> Element {
             progresses.push(data);
         }
     }
+    progresses.sort_by(|a, b| b.progress().total_cmp(&a.progress()));
     rsx! {
         div {
             id: "hero",
