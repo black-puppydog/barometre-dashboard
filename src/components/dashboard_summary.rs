@@ -15,9 +15,9 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
     let non_zero = progresses.iter().filter(|c| c.contributions > 0).count();
     rsx! {
         div{
-            class: "w-full rounded-xl grid grid-cols-4 m-auto my-5",
+            class: "w-full rounded-xl grid grid-cols-2 sm:grid-cols-4 m-auto my-5",
             div {
-                class: "text-center border-2 border-green-500 rounded-2xl m-5 p-5 text-xl font-semibold",
+                class: "text-center border-2 border-green-500 rounded-2xl m-5 p-5 text-xl sm:text-base font-semibold",
                 span {
                     class: "text-center text-green-500 text-4xl font-bold",
                     "{qualified}",
