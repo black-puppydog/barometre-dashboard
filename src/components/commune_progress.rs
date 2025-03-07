@@ -10,26 +10,23 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
     let insee = data.insee;
     rsx!(
     div {
-        class: "rounded-md",
+        class: "rounded-md mb-3 px-3",
         div{
-            class:"flex justify-between mb-1",
+            class:"whitespace-nowrap overflow-hidden",
             span {
-                class:"text-base font-medium text-blue-700 dark:text-white truncate font-bold",
+                class:"font-medium text-blue-700 inline-block truncate max-w-[50%] font-bold float-left",
                 "{name}"
             }
+            // span {
+            //     class:"text-blue-300 ml-5 float-left",
+            //     "{insee}"
+            // }
+            // span {
+            //     class:"text-blue-700 mx-5 float-right inline-block",
+            //     "{progress}%"
+            // }
             span {
-                class:"text-sm font-medium text-blue-700 dark:text-white truncate",
-                "{progress}%"
-            }
-        }
-        div{
-            class:"flex justify-between mb-1",
-            span {
-                class:"text-base font-xs text-blue-200 dark:text-white truncate",
-              "{insee}"
-            }
-            span {
-                class:"text-sm font-xs dark:text-red-200 dark:text-white truncate",
+                class:"text-blue-500 float-right inline-block",
                 "{data.contributions} / {max}"
             }
         }
@@ -37,6 +34,7 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
             class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
             max: 100,
             value: progress,
+            title: "{progress}%",
             "{progress}%"
         }
     })
