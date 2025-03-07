@@ -14,12 +14,23 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
         div{
             class:"flex justify-between mb-1",
             span {
-                class:"text-base font-medium text-blue-700 dark:text-white",
-                "{name} ({insee})"
+                class:"text-base font-medium text-blue-700 dark:text-white truncate",
+                "{name}"
             }
             span {
-                class:"text-sm font-medium text-blue-700 dark:text-white",
-                "{progress}% ({data.contributions} / {max})"
+                class:"text-sm font-medium text-blue-700 dark:text-white truncate",
+                "{progress}%"
+            }
+        }
+        div{
+            class:"flex justify-between mb-1",
+            span {
+                class:"text-base font-xs text-blue-200 dark:text-white truncate",
+              "{insee}"
+            }
+            span {
+                class:"text-sm font-xs dark:text-red-200 dark:text-white truncate",
+                "{data.contributions} / {max}"
             }
         }
         progress {

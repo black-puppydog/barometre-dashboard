@@ -1,10 +1,9 @@
 use dioxus::prelude::*;
 
 use crate::components::commune_progress::Commune;
+use crate::components::DashboardSummary;
 use crate::types::{CommuneData, CommuneProperties, CommunePropertiesSlim};
 use std::collections::HashMap;
-use std::sync::LazyLock;
-use std::sync::Mutex;
 
 const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress.geojson";
 
@@ -57,11 +56,11 @@ pub fn Dashboard(prefix: String) -> Element {
     progresses.sort_by(|a, b| b.progress().total_cmp(&a.progress()));
     rsx! {
         div {
-            id: "hero",
             if have_response {
+                DashboardSummary{progresses: progresses.clone()}
                 div {
-                    id: "links",
-                    class: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
+                    id: "details",
+                    class: "mx-auto w-3/4 max-w-sm",
                     for prog in progresses {
                         Commune{data: prog}
                     }
