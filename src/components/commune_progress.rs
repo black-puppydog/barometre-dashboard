@@ -31,7 +31,7 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
             }
         }
         progress {
-            class: "w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700",
+            class: "w-full h-6 bg-gray-200 rounded-full",
             max: 100,
             value: progress,
             title: "{progress}%",
