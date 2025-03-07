@@ -56,11 +56,12 @@ pub fn Dashboard(prefix: String) -> Element {
     progresses.sort_by(|a, b| b.progress().total_cmp(&a.progress()));
     rsx! {
         div {
+            class: "mx-auto w-full max-w-2xl",
             if have_response {
                 DashboardSummary{progresses: progresses.clone()}
                 div {
                     id: "details",
-                    class: "mx-auto w-3/4 max-w-sm",
+                    class: "mx-auto w-full",
                     for prog in progresses {
                         Commune{data: prog}
                     }

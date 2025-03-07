@@ -14,7 +14,7 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
         div{
             class:"flex justify-between mb-1",
             span {
-                class:"text-base font-medium text-blue-700 dark:text-white truncate",
+                class:"text-base font-medium text-blue-700 dark:text-white truncate font-bold",
                 "{name}"
             }
             span {
