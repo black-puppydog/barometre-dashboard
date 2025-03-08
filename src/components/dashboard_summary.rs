@@ -17,9 +17,9 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
         div{
             class: "w-full rounded-xl grid grid-cols-2 sm:grid-cols-4 m-auto my-5",
             div {
-                class: "text-center border-2 border-green-500 rounded-2xl m-5 p-5 text-xl sm:text-base font-semibold",
+                class: "text-center border-2 border-green-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
                 span {
-                    class: "text-center text-green-500 text-4xl font-bold",
+                    class: "text-center text-green-500 text-l sm:text-4xl font-bold",
                     "{qualified}",
                 },
                 br{},
@@ -29,9 +29,9 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
                 }
             },
             div {
-                class: "text-center border-2 border-orange-500 rounded-2xl m-5 p-5 text-xl font-semibold",
+                class: "text-center border-2 border-orange-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
                 span {
-                    class: "text-center text-orange-500 text-4xl font-semibold",
+                    class: "text-center text-orange-500 text-l sm:text-4xl font-semibold",
                     "{close}"
                 },
                 br{},
@@ -41,9 +41,9 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
                 }
             }
             div{
-                class: "text-center border-2 border-red-500 rounded-2xl m-5 p-5 text-xl font-semibold",
+                class: "text-center border-2 border-red-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
                 span {
-                    class: "text-center text-red-500 text-4xl font-semibold",
+                    class: "text-center text-red-500 text-l sm:text-4xl font-semibold",
                     "{non_zero}"
                 },
                br {}
@@ -53,9 +53,9 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
                }
             },
             div{
-                class: "text-center border-2 border-blue-500 rounded-2xl m-5 p-5 text-xl font-semibold",
+                class: "text-center border-2 border-blue-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
                 span {
-                    class: "text-center text-blue-500 text-4xl font-semibold",
+                    class: "text-center text-blue-500 text-l sm:text-4xl font-semibold",
                     "{progresses.len()}"
                 },
                br {}
