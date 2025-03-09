@@ -24,6 +24,9 @@ pub enum CommuneProgressClass {
 
 #[component]
 pub fn Dashboard(prefix: String) -> Element {
+    if prefix.trim().len() == 0 {
+        return crate::views::Home();
+    }
     let communes = use_resource(move || async move {
         let raw_data = reqwest::get(PROGRESS_URL)
             .await

@@ -1,11 +1,10 @@
 use dioxus::prelude::*;
 
-use views::Home;
-
 mod components;
 use components::Dashboard;
 mod types;
 mod views;
+use views::Home;
 
 #[component]
 fn NotFound(segments: Vec<String>) -> Element {
@@ -17,8 +16,6 @@ fn NotFound(segments: Vec<String>) -> Element {
 enum Route {
     #[route("/?:prefix")]
     Dashboard { prefix: String },
-    #[route("/")]
-    Home {},
     // #[route("/:..segments")]
     // NotFound{segments: Vec<String>},
 }

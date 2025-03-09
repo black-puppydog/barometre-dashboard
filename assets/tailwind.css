@@ -578,8 +578,17 @@ video {
   margin: 0.25rem;
 }
 
+.m-9 {
+  margin: 2.25rem;
+}
+
 .m-auto {
   margin: auto;
+}
+
+.mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 }
 
 .mx-auto {
@@ -606,6 +615,10 @@ video {
 
 .h-6 {
   height: 1.5rem;
+}
+
+.max-h-\[30px\] {
+  max-height: 30px;
 }
 
 .w-\[20\%\] {
@@ -646,6 +659,10 @@ video {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 
 .rounded-md {
@@ -39825,6 +39842,11 @@ video {
   padding-right: 0.75rem;
 }
 
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
@@ -39836,6 +39858,11 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-bold {
@@ -59476,10 +59503,6 @@ video {
 .\[\&\:\:-webkit-progress-bar\]\:bg-slate-200::-webkit-progress-bar {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
-}
-
-.\[\&\:\:-webkit-progress-value\]\:rounded-lg::-webkit-progress-value {
-  border-radius: 0.5rem;
 }
 
 .\[\&\:\:-webkit-progress-value\]\:rounded-full::-webkit-progress-value {
