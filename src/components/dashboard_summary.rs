@@ -3,6 +3,24 @@ use dioxus::prelude::*;
 use crate::types::CommunePropertiesSlim;
 
 #[component]
+fn DashboardTile(number: usize, text: String, color: String) -> Element {
+    rsx!(
+        div {
+            class: "text-center border-2 border-{color}-500 rounded-2xl m-1 sm:m-5 py-5 sm:px-5 font-semibold",
+            span {
+                class: "text-center text-{color}-500 text-l sm:text-4xl font-bold",
+                "{number}",
+            },
+            br{},
+            span {
+                class: "text-{color}-400 text-ellipsis whitespace-nowrap",
+                "{text}",
+            }
+        },
+    )
+}
+
+#[component]
 pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
     let qualified = progresses.iter().filter(|c| c.progress() >= 100f32).count();
     let close = progresses
@@ -16,54 +34,10 @@ pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
     rsx! {
         div{
             class: "w-full rounded-xl grid grid-cols-2 sm:grid-cols-4 m-auto my-5",
-            div {
-                class: "text-center border-2 border-green-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
-                span {
-                    class: "text-center text-green-500 text-l sm:text-4xl font-bold",
-                    "{qualified}",
-                },
-                br{},
-                span {
-                    class: "text-green-400",
-                    "Qualifié",
-                }
-            },
-            div {
-                class: "text-center border-2 border-orange-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
-                span {
-                    class: "text-center text-orange-500 text-l sm:text-4xl font-semibold",
-                    "{close}"
-                },
-                br{},
-                span {
-                    class: "text-orange-400",
-                    "Presque"
-                }
-            }
-            div{
-                class: "text-center border-2 border-red-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
-                span {
-                    class: "text-center text-red-500 text-l sm:text-4xl font-semibold",
-                    "{non_zero}"
-                },
-               br {}
-               span {
-                   class: "text-red-400",
-                   "Non zéro"
-               }
-            },
-            div{
-                class: "text-center border-2 border-blue-500 rounded-2xl m-1 sm:m-5 p-5 font-semibold",
-                span {
-                    class: "text-center text-blue-500 text-l sm:text-4xl font-semibold",
-                    "{progresses.len()}"
-                },
-               br {}
-               span {
-                   class: "text-blue-400",
-                   "Total"
-               }
-            },
+            DashboardTile { number: qualified, text: "Qualifié", color: "green" },
+            DashboardTile { number: close, text: "Presque", color: "orange" },
+            DashboardTile { number: non_zero, text: "Non zéro", color: "red" },
+            DashboardTile { number: progresses.len(), text: "Total", color: "blue" }
         }
     }
 }
