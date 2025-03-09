@@ -7,7 +7,6 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
     let max = data.target_contributions();
     let name = data.name;
     let progress = (100.0 * (data.contributions as f32 / max as f32)).round() as usize;
-    let insee = data.insee;
     rsx!(
     div {
         class: "rounded-md mb-3 px-3",
@@ -17,14 +16,6 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
                 class:"font-medium text-blue-700 font-bold block w-full overflow-hidden text-ellipsis whitespace-nowrap",
                 "{name}"
             }
-            // span {
-            //     class:"text-blue-300 ml-5 float-left",
-            //     "{insee}"
-            // }
-            // span {
-            //     class:"text-blue-700 mx-5 float-right inline-block",
-            //     "{progress}%"
-            // }
             span {
                 class:"text-blue-500 absolute right-0 top-0 w-[20%] overflow-hidden text-clip whitespace-nowrap my-score",
                 "{data.contributions} / {max}"
