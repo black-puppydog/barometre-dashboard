@@ -12,9 +12,9 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
     div {
         class: "rounded-md mb-3 px-3",
         div{
-            class:"whitespace-nowrap overflow-hidden",
+            class:"relative overflow-hidden whitespace-nowrap pr-[20%]",
             span {
-                class:"font-medium text-blue-700 inline-block truncate max-w-[50%] font-bold float-left",
+                class:"font-medium text-blue-700 font-bold block w-full overflow-hidden text-ellipsis whitespace-nowrap",
                 "{name}"
             }
             // span {
@@ -26,7 +26,7 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
             //     "{progress}%"
             // }
             span {
-                class:"text-blue-500 float-right inline-block",
+                class:"text-blue-500 absolute right-0 top-0 w-[20%] overflow-hidden text-clip whitespace-nowrap my-score",
                 "{data.contributions} / {max}"
             }
         }
@@ -34,8 +34,8 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
             class: "w-full h-6 bg-gray-200 rounded-full",
             max: 100,
             value: progress,
-            title: "{progress}%",
-            "{progress}%"
+            title: "{data.contributions} réponses sur {max} nécessaires\n{progress}%",
+            "{data.contributions} / {max}"
         }
     })
 }
