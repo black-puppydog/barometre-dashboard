@@ -59454,15 +59454,49 @@ video {
   }
 }
 
-.\[\&\:\:-webkit-progress-bar\]\:rounded-lg::-webkit-progress-bar {
-  border-radius: 0.5rem;
+.\[\&\:\:-moz-progress-bar\]\:bg-green-400::-moz-progress-bar {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--tw-bg-opacity, 1));
 }
 
-.\[\&\:\:-webkit-progress-bar\]\:bg-slate-700::-webkit-progress-bar {
+.\[\&\:\:-moz-progress-bar\]\:bg-orange-400::-moz-progress-bar {
   --tw-bg-opacity: 1;
-  background-color: rgb(51 65 85 / var(--tw-bg-opacity, 1));
+  background-color: rgb(251 146 60 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:\:-moz-progress-bar\]\:bg-red-400::-moz-progress-bar {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:\:-webkit-progress-bar\]\:rounded-full::-webkit-progress-bar {
+  border-radius: 9999px;
+}
+
+.\[\&\:\:-webkit-progress-bar\]\:bg-slate-200::-webkit-progress-bar {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
 }
 
 .\[\&\:\:-webkit-progress-value\]\:rounded-lg::-webkit-progress-value {
   border-radius: 0.5rem;
+}
+
+.\[\&\:\:-webkit-progress-value\]\:rounded-full::-webkit-progress-value {
+  border-radius: 9999px;
+}
+
+.\[\&\:\:-webkit-progress-value\]\:bg-green-400::-webkit-progress-value {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:\:-webkit-progress-value\]\:bg-orange-400::-webkit-progress-value {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 146 60 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:\:-webkit-progress-value\]\:bg-red-400::-webkit-progress-value {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity, 1));
 }
