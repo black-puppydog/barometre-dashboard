@@ -1,46 +1,13 @@
 use dioxus::prelude::*;
 
 use crate::types::CommunePropertiesSlim;
-
-enum CommuneProgressClass {
-    Qualified,
-    Close,
-    NonZero,
-    Zero,
-}
-
-fn progress_class_to_color(progress_class: CommuneProgressClass) -> &'static str {
-    match progress_class {
-        CommuneProgressClass::Qualified => "green",
-        CommuneProgressClass::Close => "orange",
-        CommuneProgressClass::NonZero => "red",
-        // not important since zero progress will never actually draw any pixels, but we need to return *something*
-        CommuneProgressClass::Zero => "slate",
-    }
-}
-
-fn get_progress_class(contributions: usize, target: usize) -> CommuneProgressClass {
-    if contributions == 0 {
-        return CommuneProgressClass::Zero;
-    }
-    if contributions >= target {
-        return CommuneProgressClass::Qualified;
-    }
-    let missing = target - contributions;
-    if missing <= 10 {
-        CommuneProgressClass::Close
-    } else {
-        CommuneProgressClass::NonZero
-    }
-}
-
 #[component]
 pub fn Commune(data: CommunePropertiesSlim) -> Element {
     let max = data.target_contributions();
-    let name = data.name;
+    let name = &data.name;
     let progress = (100.0 * (data.contributions as f32 / max as f32)).round() as usize;
-    let progress_class = get_progress_class(data.contributions as usize, max);
-    let color = progress_class_to_color(progress_class);
+    let progress_class = data.progress_class();
+    let color = crate::types::progress_class_to_color(progress_class);
     rsx!(
     div {
         class: "rounded-md mb-3 px-3",

@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::components::CommuneProgressClass;
+
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
 pub struct Progress {
     #[serde(rename = "type")]
@@ -50,9 +52,34 @@ impl Into<CommunePropertiesSlim> for CommuneProperties {
     }
 }
 
+pub fn progress_class_to_color(progress_class: CommuneProgressClass) -> &'static str {
+    match progress_class {
+        CommuneProgressClass::Qualified => "green",
+        CommuneProgressClass::Close => "orange",
+        CommuneProgressClass::NonZero => "red",
+        // not important since zero progress will never actually draw any pixels, but we need to return *something*
+        CommuneProgressClass::Zero => "slate",
+    }
+}
+
 impl CommunePropertiesSlim {
     pub fn progress(&self) -> f32 {
         (100.0 * self.contributions as f32 / self.target_contributions() as f32).min(100.0)
+    }
+
+    pub fn progress_class(&self) -> CommuneProgressClass {
+        if self.contributions == 0 {
+            return CommuneProgressClass::Zero;
+        }
+        if self.contributions >= self.target_contributions() as i64 {
+            return CommuneProgressClass::Qualified;
+        }
+        let missing = self.target_contributions() - self.contributions as usize;
+        if missing <= 10 {
+            CommuneProgressClass::Close
+        } else {
+            CommuneProgressClass::NonZero
+        }
     }
 
     pub fn target_contributions(&self) -> usize {

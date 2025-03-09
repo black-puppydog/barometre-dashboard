@@ -15,6 +15,13 @@ fn read_insee_codes() -> serde_json::Result<HashMap<String, String>> {
     serde_json::from_str::<HashMap<String, String>>(insee_codes)
 }
 
+pub enum CommuneProgressClass {
+    Qualified,
+    Close,
+    NonZero,
+    Zero,
+}
+
 #[component]
 pub fn Dashboard(prefix: String) -> Element {
     let communes = use_resource(move || async move {
@@ -56,6 +63,9 @@ pub fn Dashboard(prefix: String) -> Element {
             progresses.push(data);
         }
     }
+    // sorting in two stages because sorting by progress (which is f64) isn't
+    // PartialOrd and thus can't be done by key
+    progresses.sort_by_key(|p| (-p.contributions, p.name.clone()));
     progresses.sort_by(|a, b| b.progress().total_cmp(&a.progress()));
     rsx! {
         div {
