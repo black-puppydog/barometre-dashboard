@@ -5,6 +5,9 @@ use crate::components::DashboardSummary;
 use crate::types::{CommuneData, CommuneProperties, CommunePropertiesSlim};
 use std::collections::HashMap;
 
+#[cfg(feature = "local-dev")]
+const PROGRESS_URL: &'static str = "http://localhost/example_response.json";
+#[cfg(not(feature = "local-dev"))]
 const PROGRESS_URL: &'static str = "https://www.barometre-velo.fr/stats/progress.geojson";
 
 fn read_insee_codes() -> serde_json::Result<HashMap<String, String>> {
