@@ -69,3 +69,9 @@ dx serve --features local-dev
 
 This will pull [`assets/example_response.json`](assets/example_response.json) on every load,
 speeding up your development and saving bandwidth for you and the fub.
+
+If you want to update the data, just `curl` the current state (the `| jq` is optional of course) :
+
+```terminal
+curl 'https://www.barometre-velo.fr/stats/progress.geojson'  | jq > example_response.json
+```
