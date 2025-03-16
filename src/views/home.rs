@@ -1,4 +1,4 @@
-use dioxus::{logger::tracing::info, prelude::*};
+use dioxus::prelude::*;
 
 #[component]
 pub fn Home() -> Element {
@@ -6,11 +6,9 @@ pub fn Home() -> Element {
     rsx! {
         form {
             onsubmit: move |event| {
-                info!("Submitted! {event:?}");
                 let binding = event.data.values();
                 let prefix = binding.get("prefix");
                 if let Some(prefix) = prefix {
-                    info!("Going to {}", prefix.as_value());
                     nav.push(crate::Route::Dashboard { prefix: prefix.as_value() });
                 }
             },
