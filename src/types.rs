@@ -7,7 +7,7 @@ pub struct Progress {
     #[serde(rename = "type")]
     pub(crate) progress_type: String,
     pub(crate) features: Vec<CommuneData>,
-    pub(crate) date: String,
+    pub(crate) date: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
@@ -15,7 +15,7 @@ pub struct CommuneData {
     #[serde(rename = "type")]
     pub(crate) feature_type: String,
     pub(crate) geometry: Geometry,
-    pub(crate) properties: CommuneProperties,
+    pub(crate) properties: CommuneDynamicData,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
@@ -25,32 +25,52 @@ pub struct Geometry {
     pub(crate) coordinates: Vec<f64>,
 }
 
+/// The data returned by the live API, i.e. the stuff we query upon page load
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-pub struct CommuneProperties {
+pub struct CommuneDynamicData {
     pub(crate) name: String,
     pub(crate) population: i64,
     pub(crate) contributions: i64,
     pub(crate) per_cent: f64,
     pub(crate) insee: String,
 }
+
+/// This is the data we can prepare and bulk-load for all communes since it
+/// won't change over the course of the baromètre
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-pub struct CommunePropertiesSlim {
+pub struct CommuneStaticData {
+    /// INSEE code; roughly similar to code postale but NOT the same
+    pub(crate) insee: String,
+    /// name. we need this since the current live api will only return data for
+    /// communes with at least one response
     pub(crate) name: String,
-    pub(crate) population: i64,
+    /// true IFF population is >= 5000 according to INSEE
+    pub(crate) is_big: bool,
+    pub(crate) contributions_2021: usize,
+}
+
+/// The data that we actually want to display.
+/// This is a mix of historic data (previous baromètre),
+/// static data (INSEE) and dynamic data (current baromètre)
+#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
+pub struct CommuneDisplayProps {
+    pub(crate) name: String,
+    pub(crate) is_big: bool,
     pub(crate) contributions: i64,
+    pub(crate) contributions_2021: usize,
     pub(crate) insee: String,
 }
 
-impl Into<CommunePropertiesSlim> for CommuneProperties {
-    fn into(self) -> CommunePropertiesSlim {
-        CommunePropertiesSlim {
-            name: self.name,
-            population: self.population,
-            contributions: self.contributions,
-            insee: self.insee,
-        }
-    }
-}
+// impl Into<CommunePropertiesSlim> for CommuneDynamicData {
+//     fn into(self) -> CommunePropertiesSlim {
+//         CommunePropertiesSlim {
+//             name: self.name,
+//             is_big: self.population >= 5000,
+//             contributions: self.contributions,
+//             insee: self.insee,
+//         }
+//     }
+// }
 
 pub fn progress_class_to_color(progress_class: CommuneProgressClass) -> &'static str {
     match progress_class {
@@ -62,7 +82,7 @@ pub fn progress_class_to_color(progress_class: CommuneProgressClass) -> &'static
     }
 }
 
-impl CommunePropertiesSlim {
+impl CommuneDisplayProps {
     pub fn progress(&self) -> f32 {
         (100.0 * self.contributions as f32 / self.target_contributions() as f32).min(100.0)
     }
@@ -83,10 +103,10 @@ impl CommunePropertiesSlim {
     }
 
     pub fn target_contributions(&self) -> usize {
-        if self.population < 5000 {
-            30
-        } else {
+        if self.is_big {
             50
+        } else {
+            30
         }
     }
 }

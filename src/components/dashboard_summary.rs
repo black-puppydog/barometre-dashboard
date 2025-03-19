@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::types::CommunePropertiesSlim;
+use crate::types::CommuneDisplayProps;
 
 #[component]
 fn DashboardTile(number: usize, text: String, color: String) -> Element {
@@ -21,7 +21,7 @@ fn DashboardTile(number: usize, text: String, color: String) -> Element {
 }
 
 #[component]
-pub fn DashboardSummary(progresses: Vec<CommunePropertiesSlim>) -> Element {
+pub fn DashboardSummary(progresses: Vec<CommuneDisplayProps>) -> Element {
     let qualified = progresses.iter().filter(|c| c.progress() >= 100f32).count();
     let close = progresses
         .iter()

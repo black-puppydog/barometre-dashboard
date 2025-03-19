@@ -1,8 +1,8 @@
 use dioxus::prelude::*;
 
-use crate::types::CommunePropertiesSlim;
+use crate::types::CommuneDisplayProps;
 #[component]
-pub fn Commune(data: CommunePropertiesSlim) -> Element {
+pub fn Commune(data: CommuneDisplayProps) -> Element {
     let max = data.target_contributions();
     let name = &data.name;
     let progress = (100.0 * (data.contributions as f32 / max as f32)).round() as usize;
@@ -13,9 +13,13 @@ pub fn Commune(data: CommunePropertiesSlim) -> Element {
         class: "rounded-md mb-3 px-3",
         div{
             class:"relative overflow-hidden whitespace-nowrap pr-[20%]",
-            span {
-                class:"font-medium text-blue-700 font-semibold block w-full overflow-hidden text-ellipsis whitespace-nowrap",
-                "{name}"
+            details {
+                class:"cursor-pointer hover:underline font-medium text-blue-700 font-semibold block w-full overflow-hidden text-ellipsis whitespace-nowrap",
+                summary { "{name}" },
+                div {
+                    class: "mt-2 text-gray-800 font-normal",
+                    "Contributions au dernier baromètre :   {data.contributions_2021}",
+                }
             }
             span {
                 class:"text-blue-500 absolute right-0 top-0 w-[20%] overflow-hidden text-clip whitespace-nowrap my-score",
