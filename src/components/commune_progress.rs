@@ -14,18 +14,19 @@ pub fn Commune(data: CommuneDisplayProps) -> Element {
         div{
             class:"relative overflow-hidden whitespace-nowrap pr-[20%]",
             details {
-                class:"cursor-pointer hover:underline font-medium text-blue-700 font-semibold block w-full overflow-hidden text-ellipsis whitespace-nowrap",
-                summary { "{name}" },
+                summary {
+                    class:"cursor-pointer hover:underline font-medium text-blue-700 font-semibold w-full overflow-hidden text-ellipsis whitespace-nowrap",
+                    "{name}" },
                 div {
                     class: "mt-2 text-gray-800 font-normal",
                     "Contributions au dernier baromètre :   {data.contributions_2021}",
                 }
-            }
-            span {
-                class:"text-blue-500 absolute right-0 top-0 w-[20%] overflow-hidden text-clip whitespace-nowrap my-score",
+            },
+            div {
+                class:"text-blue-500 absolute right-0 top-0 w-[20%] overflow-hidden text-clip whitespace-nowrap",
                 "{data.contributions} / {max}"
             }
-        }
+        },
         // Progress bar with the background color of the progress class
         progress {
             class: "w-full h-6 rounded-full [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-{color}-400 [&::-moz-progress-bar]:bg-{color}-400",
