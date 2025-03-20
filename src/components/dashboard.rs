@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 use crate::components::commune_progress::Commune;
 use crate::components::DashboardSummary;
-use crate::types::{CommuneData, CommuneDisplayProps, CommuneDynamicData, CommuneStaticData};
+use crate::types::{CommuneDisplayProps, CommuneDynamicData, CommuneStaticData};
 use std::collections::HashMap;
 
 #[cfg(feature = "local-dev")]
