@@ -34,6 +34,16 @@ fn read_insee_codes() -> serde_json::Result<HashMap<String, CommuneStaticData>> 
     Ok(HashMap::from_iter(communes))
 }
 
+fn read_departement_names() -> serde_json::Result<HashMap<String, String>> {
+    let insee_bytes_compressed = include_bytes!("../../assets/departements.cbor.zstd");
+    let mut decoder =
+        ruzstd::decoding::StreamingDecoder::new(insee_bytes_compressed.as_slice()).unwrap();
+    let mut insee_bytes = Vec::new();
+    std::io::Read::read_to_end(&mut decoder, &mut insee_bytes).unwrap();
+    let result = serde_cbor::from_slice::<HashMap<String, String>>(&insee_bytes).unwrap();
+    Ok(result)
+}
+
 pub enum CommuneProgressClass {
     Qualified,
     Close,
@@ -61,6 +71,7 @@ pub fn Dashboard(prefix: String) -> Element {
         }
         contribution_stats
     });
+    let department_name = read_departement_names()?.get(&prefix).map(|s| s.clone());
 
     let static_data = read_insee_codes()?;
     let dynamic_data = &*communes.read();
@@ -109,6 +120,19 @@ pub fn Dashboard(prefix: String) -> Element {
     rsx! {
         div {
             class: "mx-auto w-full max-w-2xl",
+            if let Some(department_name) = department_name {
+                h1 {
+                    class: "text-center font-bold",
+                    span {
+                        class: "text-gray-700 text-3xl",
+                        "{department_name}"
+                    }
+                    span {
+                        class: "text-gray-400 text-xl ml-2",
+                        "({prefix})"
+                    }
+                }
+            },
             if have_response {
                 DashboardSummary{progresses: progresses.clone()}
                 div {
