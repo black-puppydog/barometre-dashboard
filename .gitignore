@@ -8,3 +8,4 @@
 example*.json
 
 **/~.lock*
+assets/.ipynb_checkpoints
