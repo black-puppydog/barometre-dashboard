@@ -33,6 +33,7 @@ fn App() -> Element {
     rsx! {
         // Global app resources
         document::Link { rel: "stylesheet", href: TAILWIND_CSS }
+        document::Link { rel: "icon", type: "image/png", href: asset!("/assets/favicon.png") }
         Router::<Route> {}
     }
 }
