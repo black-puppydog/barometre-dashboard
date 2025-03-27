@@ -60,12 +60,13 @@ dx serve --platform desktop
 There is *rudimentary* offline development support.
 By default, the browser will fetch the fub REST API upon load to retrieve up-to-date data.
 However, when working from a train or such, and generally when reloading often and rapidly, this may be undesirable.
-To avoid this, serve the `assets` folder using a web server of your choice (I use [caddy]) and make sure that it's CORS header is set to allow requests from all sources.
+To avoid this, serve the `assets` folder using a web server of your choice (I use [caddy][caddy]) and make sure that it's CORS header is set to allow requests from all sources.
 Then, launch your development server with
 
 ```terminal
 dx serve --features local-dev
 ```
+[caddy]: https://caddyserver.com
 
 This will pull [`assets/example_response.json`](assets/example_response.json) on every load,
 speeding up your development and saving bandwidth for you and the fub.
