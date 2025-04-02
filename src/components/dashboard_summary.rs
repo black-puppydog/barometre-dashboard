@@ -41,7 +41,7 @@ pub fn DashboardSummary(progresses: Vec<CommuneDisplayProps>) -> Element {
                 "{non_zero}",
                 span{
                     class: "text-xs",
-                    "/ {progresses.len()}"
+                    "/{progresses.len()}"
                 }
             ), text: rsx!("Avec", br{}, "réponses"), color: "gray" },
             DashboardTile { number: rsx!("{total_responses}"), text: rsx!("Réponses", br{}, "total"), color: "blue" }
