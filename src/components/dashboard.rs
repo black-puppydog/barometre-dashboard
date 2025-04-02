@@ -97,7 +97,7 @@ pub fn Dashboard(prefix: String) -> Element {
                     CommuneDisplayProps {
                         name: dynamic_commune.name.clone(),
                         insee: code.clone(),
-                        is_big: dynamic_commune.population >= 5000,
+                        is_big: dynamic_commune.population > 5000,
                         contributions: dynamic_commune.contributions,
                         contributions_2021: static_commune.contributions_2021,
                     }
