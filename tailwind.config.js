@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: "all",
-  content: ["./src/**/*.{rs,html,css}", "./dist/**/*.html"],
+  content: [
+    "./src/**/*.{rs,html,css}",
+    "./dist/**/*.html",
+    "!./assets/styling/octo_corner.css",
+  ],
   theme: {
     extend: {},
   },
